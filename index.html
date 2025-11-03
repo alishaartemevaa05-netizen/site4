@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Визажист Алина Артемьева</title>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+       integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" 
+       referrerpolicy="no-referrer" />
+    <style>
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
+        
+        body, html {
+            width: 100%; 
+            height: 100%;
+            font-family: 'Raleway', 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('5445307761941414343.jpg'); 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white;
+            overflow-x: hidden;
+            cursor: auto; 
+        }
+
+        /* Навигация */
+        nav {
+            position: fixed;
+            top: 0; 
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        nav ul li {
+            position: relative;
+            cursor: pointer;
+            padding: 8px 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #e11d48;
+            transition: width 0.3s ease;
+        }
+
+        nav ul li a.active::after,
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        nav ul li:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+        }
+
+        nav ul ul {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 8px 12px;
+            border-radius: 6px;
+            min-width: 200px;
+        }
+
+        nav ul li:hover > ul {
+            display: block;
+        }
+
+        /* Основной контент */
+        .background {
+            position: fixed;
+            top: 0; 
+            left: 0;
+            width: 100%; 
+            height: 100%;
+            background: url('071bc1e7-6884-4144-9b3e-30fffc0c99e5.jpg') center/cover no-repeat;
+            filter: brightness(0.5) contrast(1.2);
+            z-index: -1;
+        }
+
+        .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 150px;
+            flex-wrap: wrap;
+            gap: 40px;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .image-wrapper {
+            position: relative;
+            width: 200px;
+            height: 200px;
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+            display: block;
+            margin-left: 500px;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .spin {
+            animation: spin 8s linear infinite;
+        }
+
+        .play-button {
+            position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50px;
+    height: 50px;
+    background: rgba(225, 29, 72, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0; /* Скрываем текстовое содержимое */
+    cursor: pointer;
+    box-shadow: 0 0 12px #e11d48;
+    transform: translate(-50%, -50%);
+    transition: transform 0.3s;
+    margin-left: 500px;
+    z-index: 10;
+    
+            
+}
+
+/* Иконка play с помощью псевдоэлемента */
+.play-button:not(.playing)::before {
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 0 10px 16px;
+    border-color: transparent transparent transparent white;
+    margin-left: 2px;
+    
+}
+
+ 
+/* Иконка паузы с помощью псевдоэлементов */
+.play-button.playing::before,
+.play-button.playing::after {
+    content: '';
+     border-width: 10px 0 10px 16px;
+     width: 4px;
+     height: 16px;
+     background: white;
+    display: inline-block;
+    margin-left: 2px;
+}
+
+        .play-button:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .play-button.playing {
+            /*animation: spin 2s linear infinite;*/
+           transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .text-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            max-width: 300px;
+        }
+
+        .text-info h1 {
+            font-size: 70px;
+            margin-left: -500px;
+            margin-bottom: 8px;
+            font-family: 'Raleway', sans-serif;
+            font-weight: 700;
+        }
+
+        .text-info h2 {
+            font-size: 70px;
+            margin-left: -500px;
+            margin-bottom: 8px;
+            font-family: 'Raleway', sans-serif;
+            font-weight: 700;
+        }
+
+        .text-info p {
+            font-size: 40px;
+            color: #ccc;
+            margin-left: -500px;
+            font-family: 'Raleway', sans-serif;
+            font-weight: 400;
+        }
+
+        /* Кнопка записи в первой секции */
+        .book-btn-section {
+             position: absolute;
+            bottom: 20px;
+            left: 20px;
+            z-index: 15;
+            transition: all 0.5s ease;
+        }
+
+        .book-btn {
+          
+             background: #e11d48;
+    color: white;
+    padding: 8px 35px; 
+    border: none;
+    font-size: 30px; 
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    transition: 0.3s;
+    text-decoration: none;
+    pointer-events: auto;
+    position: relative;
+    left: 120px;
+    top: -170px;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 400;
+    height: 80px;
+   
+    display: flex;
+    align-items: center;
+    justify-content: center;
+           
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px #e11d48; }
+            50% { box-shadow: 0 0 20px #e11d48; }
+            100% { box-shadow: 0 0 5px #e11d48; }
+        }
+
+        .book-btn:hover {
+            background: #be123c;
+            transform: scale(1.05);
+            animation: glow 1.5s infinite;
+        }
+
+        /* Цитаты в первой секции */
+        .quote-section {
+           position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 24px;
+            border-radius: 20px;
+            font-size: 20px;
+            color: #f87171;
+            font-style: italic;
+            min-height: 30px;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 2px solid #f87171;
+            backdrop-filter: blur(10px);
+        }
+
+        
+        /* Секция с формой */
+        .form-section {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 100px 20px;
+            background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.9));
+        }
+
+        .form-container {
+            background: rgba(31, 31, 31, 0.95);
+            padding: 50px;
+            border-radius: 20px;
+            max-width: 550px;
+            width: 100%;
+            box-shadow: 0 0 40px rgba(225, 29, 72, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(225, 29, 72, 0.2);
+        }
+
+        .form-container h2 {
+            color: #e11d48;
+            text-align: center;
+            margin-bottom: 35px;
+            font-family: 'Raleway', sans-serif;
+            font-weight: 600;
+            font-size: 32px;
+            letter-spacing: 1px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: #fff;
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 10px;
+            background: rgba(47, 47, 47, 0.8);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            font-family: 'Raleway', sans-serif;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #e11d48;
+            background: rgba(47, 47, 47, 1);
+            box-shadow: 0 0 10px rgba(225, 29, 72, 0.3);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #e11d48, #be123c);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Raleway', sans-serif;
+            margin-top: 10px;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(225, 29, 72, 0.4);
+        }
+
+        .form-message {
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .form-message.success {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            display: block;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .form-message.error {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            display: block;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+         
+
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+
+    <nav>
+        <ul>
+            <li><a href="#main" class="active">Главная</a></li>
+            <li><a href="#about">Обо мне</a>
+                <ul>
+                    <li><a href="#certificates">Сертификаты</a></li>
+                    <li><a href="#belordesign">Belor design</a></li>
+                </ul>
+            </li>
+            <li><a href="#services">Услуги</a>
+                <ul>
+                    <li><a href="#wedding">Свадебный макияж</a></li>
+                    <li><a href="#day">Дневной макияж</a></li>
+                    <li><a href="#creative">Креативный</a></li>
+                </ul>
+            </li>
+            <li><a href="#portfolio">Портфолио</a></li>
+            <li><a href="#contacts">Контакты</a></li>
+        </ul>
+    </nav>
+
+    <section id="main" class="main-container">
+        <div class="text-info">
+            <h1>Алина</h1> 
+            <h2>Артемьева</h2>
+            <p>Визажист</p>
+        </div>
+        
+        <div class="image-wrapper">
+            <img id="rotatingImage" src="https://optim.tildacdn.com/tild6231-3535-4161-a361-306664373737/-/resize/332x/-/format/webp/Linked_Path_Group.png" alt="Фото">
+            <div class="play-button" onclick="playAudio()">▶</div>
+        </div>
+
+        <!-- Цитаты в первой секции -->
+        <div class="quote-section" id="quoteStick"></div>
+
+        <!-- Кнопка записи в первой секции -->
+        <div class="book-btn-section">
+            <a href="#appointment" class="book-btn">Записаться</a>
+        </div>
+    </section>
+
+   
+    
+
+    <audio id="voice" preload="metadata">
+        <!-- Замените src на путь к вашему аудиофайлу -->
+        <source src="5460986681333159067.mp3" type="audio/mpeg">
+        Ваш браузер не поддерживает аудио элементы.
+    </audio>
+<style>
+/* Подвал в стиле примера */
+        .page-footer {
+            background: #0a0a0a;
+            padding: 40px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .page-footer .inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Социальные иконки */
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            list-style: none;
+            padding: 0;
+        }
+
+        .social-links .item {
+            margin: 0;
+        }
+
+        .social-links .link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: #ccc;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        /* Убраны все эффекты при наведении */
+        .social-links .link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ccc;
+            transform: none;
+        }
+
+        /* Контент подвала */
+        .footer-content {
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .footer-content p {
+            margin-bottom: 8px;
+            font-size: 16px;
+            color: #ccc;
+        }
+
+        .footer-content p:first-child {
+            color: #e11d48;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .footer-content p:nth-child(3) {
+            font-weight: 500;
+            color:#ccc ;
+        }
+
+        /* Брендинг */
+        .branding {
+            font-size: 14px;
+            color: #666;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 15px;
+            width: 100%;
+        }
+
+        .branding a {
+            color: #666;
+            text-decoration: none;
+        }
+
+        /* Адаптивность */
+        @media(max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+                align-items: center;
+                padding-top: 120px;
+            }
+
+            .text-info h1, 
+            .text-info h2 { 
+                font-size: 40px; 
+                text-align: center;
+            }
+            
+            .text-info p { 
+                font-size: 24px; 
+                text-align: center;
+            }
+
+            .form-container {
+                padding: 30px 20px;
+            }
+        }
+        
+        
+</style>
+
+<!-- Секция с формой -->
+    <section id="appointment" class="form-section">
+        <div class="form-container">
+            <h2>Запись на макияж</h2>
+            <div class="accent-line"></div>
+            <form id="appointmentForm">
+                <div class="form-group">
+                    <label for="name">Ваше имя</label>
+                    <input type="text" id="name" name="name" placeholder="Введите ваше имя" required>
+                    
+                </div>
+                <div class="form-group">
+                    <label for="phone">Телефон</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Введите ваш телефон" required>
+                    
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Введите ваш email" required>
+                    
+                </div>
+                <div class="form-group">
+                    <label for="date">Предпочтительная дата</label>
+                    <input type="date" id="date" name="date" required>
+                    
+                </div>
+                <div class="form-group">
+                    <label for="comment">Комментарий</label>
+                    <textarea id="comment" name="comment" rows="4" placeholder="Дополнительные пожелания"></textarea>
+                    
+                </div>
+                <button type="submit" class="submit-btn">Отправить заявку</button>
+            </form>
+            <div id="formMessage" class="form-message"></div>
+        </div>
+    </section>
+<!-- Подвал -->
+    <footer class="page-footer">
+        <div class="inner -visible">
+            <ul class="social-links js-social-links">
+                <li class="item">
+                    <a title="https://vk.com/id266883086" class="link" target="_blank" rel="noopener noreferrer" href="https://vk.com/id266883086">
+                        <i class="fab fa-vk"></i>
+                    </a>
+                </li>
+                <li class="item">
+                    <a title="https://wa.me/375295485739" class="link" target="_blank" rel="noopener noreferrer" href="https://wa.me/375295485739">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </li>
+                <li class="item">
+                    <a title="https://t.me/Artemeva05" class="link" target="_blank" rel="noopener noreferrer" href="https://t.me/Artemeva05">
+                        <i class="fab fa-telegram-plane"></i>
+                    </a>
+                </li>
+                <li class="item">
+                    <a title="tel:+375295485739" class="link" target="_blank" rel="noopener noreferrer" href="tel:+375295485739">
+                        <i class="fas fa-phone"></i>
+                    </a>
+                </li>
+            </ul>
+            <div class="footer-content text-section wysiwyg">
+                <p>Визажист Минск, Беларусь&nbsp;</p>
+                <p>all_artemeva05@mail.ru&nbsp;</p>
+                <p>Артемьева Алина Андреевна&nbsp;</p>
+                <p>ИНН 593051905586</p>
+                <p><br></p>
+            </div>
+            <div class="branding"> 
+                <a>&copy; 2025 Alina Artemeva. Все права защищены.</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src = "/script.js">
+
+    </script>
+</body>
+</html>
